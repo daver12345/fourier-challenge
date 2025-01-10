@@ -31,5 +31,6 @@ You may run both (A) and (B) in the same process for simplicity.
 
 -   **Pump & Sensor Simulation**
     -   Behave like a physical pump and a temperature sensor, responding over the same interfaces.
-    -   You can use a simple model (e.g., a linear function) to simulate temperature changes: T(t)=T(t−1)+(pump is ON?V×dt:−V×dt)
+    -   You can use a simple model (e.g., a linear function) to simulate temperature changes:
+        -   T(t) = T(t−1) + (pump is ON ? V×dt : −V×dt)
     -   Document your assumptions, formulas, and any simplifications made.
