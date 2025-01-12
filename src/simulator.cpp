@@ -32,7 +32,7 @@ void temp_sim() {
         }
         // Update temperature based on pump state
         std::chrono::duration<double> dt = system_clock::now() - time;
-        temperature += (pump_state == "ON") ? int(-dt.count()) : int(dt.count());
+        temperature += (pump_state == "ON") ? -int(dt.count()) : int(dt.count());
         time = system_clock::now();
     }
 }
