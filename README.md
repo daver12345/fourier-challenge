@@ -25,11 +25,13 @@ Note that the values have been flipped from the given formula, as a cooling pump
 **Serial Communication**
 The controller and simulator will communicate via two virtual TTY pairs created by `socat` for the pump communication and temperature sensor communication, respectively. They are instantiated like so:
 
-`socat -d -d PTY,link=/tmp/ttyV0,raw,echo=0 PTY,link=/tmp/ttyV1,raw,echo=0`
+`socat PTY,link=/tmp/ttyV0,raw,echo=0 PTY,link=/tmp/ttyV1,raw,echo=0`
 
-`socat -d -d PTY,link=/tmp/ttyV2,raw,echo=0 PTY,link=/tmp/ttyV3,raw,echo=0`
+`socat PTY,link=/tmp/ttyV2,raw,echo=0 PTY,link=/tmp/ttyV3,raw,echo=0`
 
 These TTY pairs simulate a full-duplex serial port, where the controller can do read/writes at the same time as the simulator. These can now be used as normal ports by opening the file descriptor as you would a regular serial port.
+
+Note: Feel free to use & at the end of each command to open the links as background tasks.
 
 The controller wakes up every 200ms and 1s, sending a command to the simulator to retrieve the most up to date values of pump state and temperature. 
 - This design was decided on because having the simulator constantly sending pump state and temperature values would a) be inefficent and b) fill the buffer, so the controller couldn't fetch the most up to date values.

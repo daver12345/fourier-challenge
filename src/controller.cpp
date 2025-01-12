@@ -23,6 +23,7 @@ void pump_comm() {
 void temp_comm() {
     const char* temp_port = "/tmp/ttyV2";
     int temperature = 0;
+    // Every 1s read the temperature and update command based on TARGET temperature
     while(true) {
         serial_send(temp_port, "READ");
         std::string message = serial_recv(temp_port);

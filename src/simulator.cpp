@@ -6,6 +6,7 @@ std::string pump_state = "OFF";
 void pump_sim() {
     const char* pump_port = "/tmp/ttyV1";
 
+    // Wait on a command from the controller and send/update pump state in response
     while(true) {
         std::string command = serial_recv(pump_port);
         if (command == "READ") {
@@ -19,11 +20,14 @@ void pump_sim() {
 void temp_sim() {
     const char* temp_port = "/tmp/ttyV3";
     int temperature = 0;
+
+    // Wait on a command from the sensor and send temperature in response
     while(true) {
         std::string command = serial_recv(temp_port);
         if (command == "READ") {
             serial_send(temp_port, std::to_string(temperature));
         }
+        // Update temperature based on pump state, every 1s when sensor communicates
         temperature += (pump_state == "ON") ? -1 : 1;
     }
 }
