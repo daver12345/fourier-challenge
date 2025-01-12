@@ -1,12 +1,12 @@
+#include <thread>
 #include "controller.h"
 #include "simulator.h"
-#include <thread>
 
 int main() {
-    std::thread thread1(print1);
-    std::thread thread2(print2);
+    std::thread controller_thread(run_controller);
+    std::thread simulator_thread(run_simulator);
 
-    thread1.join();
-    thread2.join();
+    controller_thread.join();
+    simulator_thread.join();
     return 0;
 }

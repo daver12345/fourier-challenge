@@ -1,7 +1,7 @@
 .PHONY: clean build run
 
 build:
-	g++ -o sim controller.cpp simulator.cpp sim.cpp
+	g++ -o sim controller.cpp simulator.cpp serial.cpp sim.cpp
 
 run: build
 	./sim
