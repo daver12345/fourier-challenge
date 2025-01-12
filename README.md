@@ -18,9 +18,8 @@ The only command from the temperature sensor is `READ`.
  
  When the simulator receives a `READ` on the pump port, it will send back the current state to the pump controller. On the reception of an `ON` or `OFF`, the pump will change its state accordingly.
  
- When the simulator receives a `READ` on the temperature port, it will send back the current temperature to the sensor, as well as update the current temperature based on the pump state. This follows a similar linear function as the instructions.
--  T(t) = T(t-1) + (pump is ON) ? -1 : 1
-- dt is accounted for here as we assume the temperature sensor will send a read once a second, so the temperature will update every second.
+ When the simulator receives a `READ` on the temperature port, it will send back the current temperature to the sensor, as well as update the current temperature based on the pump state. This follows a similar linear function as the instructions, with V = 1.
+-  T(t) = T(t-1) + (pump is ON) ? -dt : dt
 
 Note that the values have been flipped from the given formula, as a cooling pump is assumed to cool the water down when `ON` and let it warm when `OFF`.
 

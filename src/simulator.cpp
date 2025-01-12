@@ -1,6 +1,7 @@
 #include <thread>
 #include "simulator.h"
 #include "serial.h"
+#include <iostream>
 std::string pump_state = "OFF";
 
 void pump_sim() {
@@ -20,6 +21,8 @@ void pump_sim() {
 void temp_sim() {
     const char* temp_port = "/tmp/ttyV3";
     int temperature = 0;
+    using namespace std::chrono;
+    system_clock::time_point time = system_clock::now();
 
     // Wait on a command from the sensor and send temperature in response
     while(true) {
@@ -27,8 +30,10 @@ void temp_sim() {
         if (command == "READ") {
             serial_send(temp_port, std::to_string(temperature));
         }
-        // Update temperature based on pump state, every 1s when sensor communicates
-        temperature += (pump_state == "ON") ? -1 : 1;
+        // Update temperature based on pump state
+        std::chrono::duration<double> dt = system_clock::now() - time;
+        temperature += (pump_state == "ON") ? int(-dt.count()) : int(dt.count());
+        time = system_clock::now();
     }
 }
 
