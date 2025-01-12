@@ -30,6 +30,9 @@ void temp_comm() {
         if (!message.empty()) {
             temperature = std::stoi(message);
             std::cout << "TEMP: " << temperature << std::endl;
+        } else {
+            std::cerr << "Error: Received temperature is NULL" << std::endl;
+            exit(EXIT_FAILURE);
         }
         
         // Temperature logic

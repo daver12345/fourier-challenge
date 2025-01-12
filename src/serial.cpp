@@ -7,8 +7,8 @@ void serial_send(const char* port, std::string message) {
     // SYNC to make sure data is fully written before sent
     int fd = open(port, O_WRONLY | O_NOCTTY | O_SYNC);
     if (fd == -1) {
-        std::cerr << "Failed to open port " << port << std::endl;
-        return;
+        std::cerr << "Error: Failed to open port " << port << std::endl;
+        exit(EXIT_FAILURE);
     }
 
     const char* c_message = message.c_str();
@@ -20,8 +20,8 @@ std::string serial_recv(const char* port) {
     // NOCTTY to prevent port from become controlling terminal, i.e. so Ctrl-C works
     int fd = open(port, O_RDONLY | O_NOCTTY);
     if (fd == -1) {
-        std::cerr << "Failed to open port " << port << std::endl;
-        return "";
+        std::cerr << "Error: Failed to open port " << port << std::endl;
+        exit(EXIT_FAILURE);
     }
 
     char buf[256];

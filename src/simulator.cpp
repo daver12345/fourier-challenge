@@ -14,6 +14,9 @@ void pump_sim() {
             serial_send(pump_port, pump_state);
         } else if (command == "ON" || command == "OFF") {
             pump_state = command;
+        } else {
+            std::cerr << "Error: Received pump command is improperly formatted" << std::endl;
+            exit(EXIT_FAILURE);
         }
     }
 }
@@ -29,6 +32,9 @@ void temp_sim() {
         std::string command = serial_recv(temp_port);
         if (command == "READ") {
             serial_send(temp_port, std::to_string(temperature));
+        } else {
+            std::cerr << "Error: Received sensor command is improperly formatted" << std::endl;
+            exit(EXIT_FAILURE);
         }
         // Update temperature based on pump state
         std::chrono::duration<double> dt = system_clock::now() - time;
