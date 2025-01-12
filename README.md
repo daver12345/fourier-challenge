@@ -5,6 +5,7 @@
 - `make run`
 
 **Controller**
+
 The commands from the pump controller are `READ`,  `ON`, and `OFF`.
 - This `READ` command currently has no function other than printing to console, as there are no fault signals described in the writeup.
 - The `ON` and `OFF` commands are set by the temperature logic, so the pump controller will send whichever command has been determined previously.
@@ -14,6 +15,7 @@ The only command from the temperature sensor is `READ`.
 - The sensor will assume the temperature remained the same if the reading is invalid.
 
 **Simulator**
+ 
  When the simulator receives a `READ` on the pump port, it will send back the current state to the pump controller. On the reception of an `ON` or `OFF`, the pump will change its state accordingly.
  
  When the simulator receives a `READ` on the temperature port, it will send back the current temperature to the sensor, as well as update the current temperature based on the pump state. This follows a similar linear function as the instructions.
@@ -23,6 +25,7 @@ The only command from the temperature sensor is `READ`.
 Note that the values have been flipped from the given formula, as a cooling pump is assumed to cool the water down when `ON` and let it warm when `OFF`.
 
 **Serial Communication**
+
 The controller and simulator will communicate via two virtual TTY pairs created by `socat` for the pump communication and temperature sensor communication, respectively. They are instantiated like so:
 
 `socat PTY,link=/tmp/ttyV0,raw,echo=0 PTY,link=/tmp/ttyV1,raw,echo=0`
