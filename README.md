@@ -7,12 +7,11 @@
 **Controller**
 
 The commands from the pump controller are `READ`,  `ON`, and `OFF`.
-- This `READ` command currently has no function other than printing to console, as there are no fault signals described in the writeup.
+- The `READ` command gets the current state of the pump and prints to console.
 - The `ON` and `OFF` commands are set by the temperature logic, so the pump controller will send whichever command has been determined previously.
 
 The only command from the temperature sensor is `READ`.
 - The sensor `READ`s the current temperature and turns the cooling pump `ON` if above the target temperature, and `OFF` if below the target temperature.
-- The sensor will assume the temperature remained the same if the reading is invalid.
 
 **Simulator**
  
