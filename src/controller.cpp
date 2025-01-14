@@ -1,9 +1,11 @@
 #include <iostream>
 #include <thread>
+#include <mutex>
 #include "controller.h"
 #include "serial.h"
 
 std::string command = "OFF";
+std::mutex command_lock;
 #define TARGET -10
 
 void pump_comm() {
@@ -13,7 +15,9 @@ void pump_comm() {
         serial_send(pump_port, "READ");
         std::string pump_state = serial_recv(pump_port);
         std::cout << "STATE: " << pump_state << std::endl;
+        command_lock.lock();
         serial_send(pump_port, command);
+        command_lock.unlock();
 
         using namespace std::chrono;
         std::this_thread::sleep_for(milliseconds(200));
@@ -35,12 +39,14 @@ void temp_comm() {
             exit(EXIT_FAILURE);
         }
         
+        command_lock.lock();
         // Temperature logic
         if (temperature > TARGET) {
             command = "ON";
         } else {
             command = "OFF";
         }
+        command_lock.unlock();
 
         using namespace std::chrono;
         std::this_thread::sleep_for(seconds(1));
