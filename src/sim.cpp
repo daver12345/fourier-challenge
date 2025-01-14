@@ -2,7 +2,7 @@
 #include "controller.h"
 #include "simulator.h"
 
-int main() {
+auto main() -> int {
     std::thread controller_thread(run_controller);
     std::thread simulator_thread(run_simulator);
 

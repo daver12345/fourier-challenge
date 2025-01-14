@@ -5,27 +5,29 @@
 void serial_send(const char* port, std::string message) {
     // NOCTTY to prevent port from become controlling terminal, i.e. so Ctrl-C works
     // SYNC to make sure data is fully written before sent
-    int fd = open(port, O_WRONLY | O_NOCTTY | O_SYNC);
-    if (fd == -1) {
+    int file_desc = open(port, O_WRONLY | O_NOCTTY | O_SYNC);
+    if (file_desc == -1) {
         std::cerr << "Error: Failed to open port " << port << std::endl;
         exit(EXIT_FAILURE);
     }
 
     const char* c_message = message.c_str();
-    write(fd, c_message, strlen(c_message));
-    close(fd);
+    write(file_desc, c_message, strlen(c_message));
+    close(file_desc);
 }
 
-std::string serial_recv(const char* port) {
+auto serial_recv(const char* port) -> std::string {
     // NOCTTY to prevent port from become controlling terminal, i.e. so Ctrl-C works
-    int fd = open(port, O_RDONLY | O_NOCTTY);
-    if (fd == -1) {
+    int file_desc = open(port, O_RDONLY | O_NOCTTY);
+    if (file_desc == -1) {
         std::cerr << "Error: Failed to open port " << port << std::endl;
         exit(EXIT_FAILURE);
     }
 
-    char buf[256];
-    int n = read(fd, buf, sizeof(buf));
-    close(fd);
-    return std::string(buf, n);
+    constexpr int BUFFER_SIZE = 256;
+
+    std::array<char, BUFFER_SIZE> buf;
+    int bytes_read = read(file_desc, buf.data(), buf.size());
+    close(file_desc);
+    return {buf.data(), static_cast<size_t>(bytes_read)};
 }
